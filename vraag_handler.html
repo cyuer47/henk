@@ -6,99 +6,250 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.6);
+      :root {
+        /* Material 3 expressive tokens (light) */
+        --md-sys-color-primary: #6750a4; /* expressive purple */
+        --md-sys-color-on-primary: #ffffff;
+        --md-sys-color-surface: #ffffff;
+        --md-sys-color-background: #f6f7fb;
+        --md-sys-color-surface-variant: #f3eefc;
+        --md-sys-color-error: #b3261e;
+        --md-sys-color-on-surface: #111827;
+        --md-sys-radius: 16px;
+        --elev-1: 0 1px 2px rgba(16, 24, 40, 0.06);
+        --elev-2: 0 6px 18px rgba(16, 24, 40, 0.08);
       }
-      .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border-radius: 8px;
-        width: 90%;
-        max-width: 420px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        text-align: center;
+
+      body {
+        background: var(--md-sys-color-background);
+        font-family: Inter, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+        color: var(--md-sys-color-on-surface);
+        -webkit-font-smoothing: antialiased;
       }
-      .modal-buttons {
+
+      .container {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 22px;
+      }
+
+      .app-title {
+        font-size: 1.5rem;
+        margin: 6px 0 14px 0;
+        font-weight: 700;
+      }
+
+      .card {
+        background: var(--md-sys-color-surface);
+        border-radius: calc(var(--md-sys-radius) - 4px);
+        padding: 18px;
+        margin-bottom: 14px;
+        box-shadow: var(--elev-1);
+        border: 1px solid rgba(99, 96, 140, 0.06);
+      }
+      .card h3 {
         display: flex;
-        flex-direction: column;
+        align-items: center;
         gap: 10px;
-        margin-top: 20px;
+        margin: 0 0 10px 0;
+        font-size: 1.05rem;
       }
-      .modal-buttons button {
-        padding: 12px;
-        font-size: 16px;
-        border-radius: 20px;
+      .section-icon {
+        width: 20px;
+        height: 20px;
+        flex: 0 0 20px;
+        opacity: 0.95;
+      }
+      .section-title span {
+        font-weight: 600;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .btn-primary {
+        background: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        box-shadow: var(--elev-1);
+      }
+      .btn-secondary {
+        background: transparent;
+        color: var(--md-sys-color-primary);
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(103, 80, 164, 0.12);
+        cursor: pointer;
+      }
+      .btn-danger {
+        background: var(--md-sys-color-error);
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 12px;
         border: none;
         cursor: pointer;
       }
-      .btn-good {
-        background: #4caf50;
-        color: white;
+      .btn-icon {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
       }
-      .btn-typo {
-        background: #2196f3;
-        color: white;
+
+      form .field {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 12px;
       }
-      .btn-wrong {
-        background: #f44336;
-        color: white;
-      }
-      .score-board {
-        background: #f8f9fa;
-        padding: 15px;
+      form input[type="text"],
+      form input[type="password"],
+      form input[type="number"],
+      form textarea {
+        padding: 12px;
         border-radius: 12px;
-        margin-bottom: 16px;
+        border: 1px solid rgba(16, 24, 40, 0.06);
+        background: linear-gradient(180deg, #fff, #fbfbff);
       }
+
       .current-question {
-        background: #e3f2fd;
-        padding: 20px;
+        background: linear-gradient(180deg, #fff, #fbfbff);
+        padding: 16px;
         border-radius: 12px;
-        border-left: 4px solid #2196f3;
+        border-left: 6px solid var(--md-sys-color-primary);
+        box-shadow: var(--elev-1);
       }
-      .helper {
-        color: #666;
+
+      .score-board {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
       }
-      .small-muted {
-        color: #777;
-        font-size: 0.9em;
+      .score-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        border-radius: 12px;
+        background: linear-gradient(180deg, #fff, #fbfdff);
+        border: 1px solid rgba(103, 80, 164, 0.04);
+        box-shadow: var(--elev-1);
       }
-      /* presence indicator */
-      .presence-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
+
+      .students-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      .student-card {
+        padding: 12px;
+        border-radius: 12px;
+        background: var(--md-sys-color-surface);
+        border: 1px solid rgba(16, 24, 40, 0.04);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: var(--elev-1);
+      }
+      .student-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: linear-gradient(180deg, #efe8ff, #f7f3ff);
         display: inline-block;
-        margin-right: 8px;
       }
-      .presence-on {
-        background: #4caf50;
-      }
-      .presence-away {
-        background: #ffc107;
-      }
-      .presence-off {
-        background: #bbb;
-      }
-      .student-away {
-        opacity: 0.65;
-        filter: grayscale(40%);
-      }
-      .student-focused {
+      .student-name {
         font-weight: 700;
       }
-      .last-seen {
-        font-size: 0.85em;
-        color: #666;
-        margin-left: 8px;
+      .small-muted {
+        color: #6b7280;
+        font-size: 0.95rem;
+      }
+
+      /* Modal - accessible */
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 6, 23, 0.5);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .modal[aria-hidden="false"] {
+        display: flex;
+      }
+      .modal-content {
+        background: var(--md-sys-color-surface);
+        padding: 18px;
+        border-radius: 14px;
+        max-width: 620px;
+        width: 100%;
+        box-shadow: var(--elev-2);
+        border: 1px solid rgba(16, 24, 40, 0.06);
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .modal-close {
+        background: transparent;
+        border: none;
+        font-size: 1.05rem;
+        cursor: pointer;
+      }
+      .modal-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 18px;
+        flex-wrap: wrap;
+      }
+      .btn-good {
+        background: #2e7d32;
+        color: #fff;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: none;
+      }
+      .btn-typo {
+        background: #0ea5e9;
+        color: #fff;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: none;
+      }
+      .btn-wrong {
+        background: var(--md-sys-color-error);
+        color: #fff;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: none;
+      }
+
+      /* visually hidden */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (max-width: 560px) {
+        .toolbar {
+          flex-direction: column;
+          align-items: stretch;
+        }
       }
     </style>
   </head>
@@ -123,7 +274,27 @@
       ></div>
 
       <div class="card">
-        <h3>Vraag Beheer</h3>
+        <h3 class="section-title">
+          <svg
+            class="section-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 2L3 7v6c0 5 3 9 9 9s9-4 9-9V7l-9-5z"
+              fill="#6750A4"
+              opacity="0.15"
+            />
+            <path
+              d="M12 2l9 5v6c0 5-3 9-9 9S3 18 3 13V7l9-5z"
+              stroke="#6750A4"
+              stroke-width="1"
+              fill="none"
+            /></svg
+          ><span>Vraag Beheer</span>
+        </h3>
         <div id="status-area"></div>
         <div style="margin-top: 12px">
           <button id="btn-clear" class="btn-danger" style="display: none">
@@ -149,7 +320,22 @@
       <div style="height: 16px"></div>
 
       <div class="card">
-        <h3>Scorebord</h3>
+        <h3 class="section-title">
+          <svg
+            class="section-icon"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 13h18M7 6h10M5 18h14"
+              stroke="#6750A4"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            /></svg
+          ><span>Scorebord</span>
+        </h3>
         <div class="score-board" id="scoreboard-container"></div>
       </div>
 
@@ -157,9 +343,27 @@
 
       <div class="card">
         <h3>Vragen toevoegen</h3>
-        <form id="addQuestionForm">
-          <label>Vraag</label><input name="vraag" required />
-          <label>Antwoord</label><input name="antwoord" required />
+        <form id="addQuestionForm" aria-label="Voeg nieuwe vraag toe">
+          <div class="field">
+            <label for="vraag_input">Vraag</label>
+            <input
+              id="vraag_input"
+              name="vraag"
+              type="text"
+              placeholder="Typ de vraag hier"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="antwoord_input">Antwoord</label>
+            <input
+              id="antwoord_input"
+              name="antwoord"
+              type="text"
+              placeholder="Correct antwoord"
+              required
+            />
+          </div>
           <div style="margin-top: 12px">
             <button class="btn-secondary" type="submit">Opslaan</button>
           </div>
@@ -169,8 +373,21 @@
       <div style="height: 16px"></div>
 
       <div class="card">
-        <h3>
-          Recente antwoorden
+        <h3 class="section-title">
+          <svg
+            class="section-icon"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 8h18M3 12h12M3 16h18"
+              stroke="#6750A4"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            /></svg
+          ><span>Recente antwoorden</span>
           <span
             id="pending-count"
             style="
@@ -191,7 +408,23 @@
       <div style="height: 16px"></div>
 
       <div class="card">
-        <h3>Leerlingen in de sessie</h3>
+        <h3 class="section-title">
+          <svg
+            class="section-icon"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM4 20c0-2.21 3.58-4 8-4s8 1.79 8 4v1H4v-1z"
+              stroke="#6750A4"
+              stroke-width="1.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
+            /></svg
+          ><span>Leerlingen in de sessie</span>
+        </h3>
         <div
           id="presence-summary"
           class="small-muted"
@@ -205,7 +438,21 @@
       <div style="height: 16px"></div>
 
       <div class="card">
-        <h3>Toets incidenten & gebande leerlingen</h3>
+        <h3 class="section-title">
+          <svg
+            class="section-icon"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z"
+              stroke="#6750A4"
+              stroke-width="1"
+              fill="none"
+            /></svg
+          ><span>Toets incidenten & gebande leerlingen</span>
+        </h3>
         <div id="violations-list" class="small-muted">Laden...</div>
         <div style="height: 8px"></div>
         <h4 style="margin-top: 8px">Gebande leerlingen</h4>
@@ -213,13 +460,40 @@
       </div>
     </div>
 
-    <div id="gradeModal" class="modal">
+    <div
+      id="gradeModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-labelledby="gradeModalTitle"
+    >
       <div class="modal-content">
-        <button class="modal-close" onclick="closeModal()" aria-label="Close">
-          ✖
-        </button>
-        <h4>Beoordeel antwoord</h4>
-        <div style="text-align: left; margin-top: 20px">
+        <div class="modal-header">
+          <h4 id="gradeModalTitle">
+            <svg
+              class="section-icon"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z"
+                stroke="#6750A4"
+                stroke-width="1"
+                fill="none"
+              /></svg
+            ><span>Beoordeel antwoord</span>
+          </h4>
+          <button
+            class="modal-close"
+            onclick="closeModal()"
+            aria-label="Sluit venster"
+          >
+            ✖
+          </button>
+        </div>
+        <div style="text-align: left; margin-top: 12px">
           <p>
             <strong>Gegeven antwoord:</strong>
             <span id="modalStudentAnswer"></span>
@@ -229,7 +503,7 @@
             <span id="modalCorrectAnswer"></span>
           </p>
         </div>
-        <p style="margin-top: 20px">Selecteer de status voor dit antwoord:</p>
+        <p style="margin-top: 12px">Selecteer de status voor dit antwoord:</p>
         <div class="modal-buttons">
           <button class="btn-good" onclick="gradeModalSubmit('goed')">
             ✅ Goed (10 punten)
@@ -752,8 +1026,22 @@
         }
       }
 
-      // Modal
+      // Modal (accessible)
       let currentModalResultId = null;
+      let _previouslyFocused = null;
+      function _setModalVisible(visible) {
+        const modal = document.getElementById("gradeModal");
+        modal.setAttribute("aria-hidden", visible ? "false" : "true");
+        if (visible) {
+          _previouslyFocused = document.activeElement;
+          document.body.style.overflow = "hidden";
+        } else {
+          document.body.style.overflow = "";
+          try {
+            _previouslyFocused && _previouslyFocused.focus();
+          } catch (e) {}
+        }
+      }
       function openModal(resultId, studentAnswerJson, correctAnswerJson) {
         // Accept either JSON-encoded strings or raw strings
         let studentAnswer = "";
@@ -773,12 +1061,21 @@
           correctAnswer = correctAnswerJson || "";
         }
         currentModalResultId = resultId;
-        document.getElementById("gradeModal").style.display = "block";
         document.getElementById("modalStudentAnswer").innerText = studentAnswer;
         document.getElementById("modalCorrectAnswer").innerText = correctAnswer;
+        const modal = document.getElementById("gradeModal");
+        _setModalVisible(true);
+        // show via aria attribute (CSS shows when aria-hidden=false)
+        modal.scrollTop = 0;
+        // focus the primary action
+        const primary = modal.querySelector(".btn-good, .btn-typo, .btn-wrong");
+        try {
+          primary && primary.focus();
+        } catch (e) {}
       }
       function closeModal() {
-        document.getElementById("gradeModal").style.display = "none";
+        const modal = document.getElementById("gradeModal");
+        _setModalVisible(false);
         currentModalResultId = null;
       }
       async function gradeModalSubmit(status) {
@@ -804,10 +1101,21 @@
         }
       }
 
-      window.onclick = function (event) {
+      // clicking overlay closes modal
+      document.addEventListener("click", (event) => {
         const modal = document.getElementById("gradeModal");
-        if (event.target == modal) closeModal();
-      };
+        if (
+          modal.getAttribute("aria-hidden") === "false" &&
+          event.target === modal
+        )
+          closeModal();
+      });
+      // ESC key closes modal
+      document.addEventListener("keydown", (e) => {
+        const modal = document.getElementById("gradeModal");
+        if (e.key === "Escape" && modal.getAttribute("aria-hidden") === "false")
+          closeModal();
+      });
 
       function escapeHtml(s) {
         if (!s) return "";
