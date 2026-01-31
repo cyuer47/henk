@@ -396,10 +396,15 @@
           const first = menu.querySelector('[role="menuitem"]');
           if (first) first.focus();
         }
-        function closeMenu() {
+        function closeMenu(opts = { focusButton: true }) {
           container.classList.remove("active");
           btn.setAttribute("aria-expanded", "false");
-          btn.focus();
+          // only move focus back to the profile button when desired
+          if (opts && opts.focusButton) {
+            try {
+              btn.focus();
+            } catch (e) {}
+          }
         }
 
         // populate header (menu avatar/name/email) when opening
@@ -428,7 +433,7 @@
 
         // close on outside click
         document.addEventListener("click", (e) => {
-          if (!container.contains(e.target)) closeMenu();
+          if (!container.contains(e.target)) closeMenu({ focusButton: false });
         });
 
         // close menu when a menuitem is clicked
@@ -436,7 +441,7 @@
           const mi = e.target.closest('[role="menuitem"]');
           if (mi) {
             // allow default navigation, but close the menu after short delay
-            setTimeout(() => closeMenu(), 50);
+            setTimeout(() => closeMenu({ focusButton: false }), 50);
           }
         });
 
